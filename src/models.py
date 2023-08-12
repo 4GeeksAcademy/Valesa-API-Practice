@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# usuario
+# Usuario
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,30 +20,29 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
+ # Aqui va Planeta 
 
-    # Aqui va Planeta 
+class Planets(db.Model):
+     id = db.Column(db.Integer, primary_key=True)
+     name = db.Column(db.String(80), nullable=False)
+     url = db.Column(db.String(80), nullable=False)
+     diameter = db.Column(db.String(150), nullable=False)
+     population = db.Column(db.String(150), nullable=False)
+     climate = db.Column(db.String(150), nullable=False)
+     terrain = db.Column(db.String(150), nullable=False)
+     surfaceWater = db.Column(db.String(150), nullable=False)
+     rotationPeriod = db.Column(db.String(350), nullable=False)
+     orbitalPeriod = db.Column(db.String(350), nullable=False)
+     gravity = db.Column(db.String(250), nullable=False)
+     films = db.Column(db.String(150), nullable=False)
+     created = db.Column(db.String(250), nullable=False)
+     edited = db.Column(db.String(250), nullable=False)
+      
 
-    class Planets(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(80), nullable=False)
-        url = db.Column(db.String(250), nullable=False)
-        diameter = db.Column(db.String(150), nullable=False)
-        population = db.Column(db.String(250), nullable=False)
-        climate = db.Column(db.String(150), nullable=False)
-        terrain = db.Column(db.String(250), nullable=False)
-        surfaceWater = db.Column(db.String(250), nullable=False)
-        rotationPeriod = db.Column(db.String(350), nullable=False)
-        orbitalPeriod = db.Column(db.String(350), nullable=False)
-        gravity = db.Column(db.String(250), nullable=False)
-        films = db.Column(db.String(150), nullable=False)
-        created = db.Column(db.String(250), nullable=False)
-        edited = db.Column(db.String(250), nullable=False)
-        favorites = db.relationship('Favorites', backref='planets', lazy=True)
-
-    def __repr__(self):
+def __repr__(self):
         return '<Planets %r>' % self.name
 
-    def serialize(self):
+def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
@@ -62,4 +61,10 @@ class User(db.Model):
         }
 
 
-
+#Personajes
+class Characters (db.Model):
+    id= db.column()
+    name= db.column()
+    url= db.column()
+    species= db.column()
+    
