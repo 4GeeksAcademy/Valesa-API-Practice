@@ -65,8 +65,25 @@ def single_user(user_id):
 
 # DELETE
 
+#PLANETAS (TODOS Y INDIVIDUAL)
+#GET
 
+#GET Planets (TODOS-ALL)
+@app.route('/planets', methods=['GET'])
+def handle_planets():
+    allplanets = Planets.query.all()
+    planetsList = list(map(lambda p: p.serialize(),allplanets))
 
+    return jsonify(planetsList), 200
+
+#GET Single Planet
+@app.route('/planets/<int:planets_id>', methods=['GET'])
+def single_planet(planets_id):
+    
+    planet = Planets.query.filter_by(id=planets_id).first()
+    if planet is None:
+        raise APIException('Planet not found', status_code=404)
+    return jsonify(planet.serialize()), 200
 
 
 
