@@ -85,6 +85,34 @@ def single_planet(planets_id):
     return jsonify(planet.serialize()), 200
 
 
+#POST Planeta
+@app.route('/planets', methods=['POST'])
+def create_planet():
+
+    request_body_planet = request.get_json()
+
+    newPlanet = Planets(
+        name=request_body_planet["name"],
+        url=request_body_planet["url"],
+        diameter=request_body_planet["diameter"],
+        population=request_body_planet["population"],
+        climate=request_body_planet["climate"],
+        terrain=request_body_planet["terrain"],
+        surfaceWater=request_body_planet["surfaceWater"],
+        rotationPeriod=request_body_planet["rotationPeriod"],
+        orbitalPeriod=request_body_planet["orbitalPeriod"],
+        gravity=request_body_planet["gravity"],
+        films=request_body_planet["films"],
+        created=request_body_planet["created"],
+        edited=request_body_planet["edited"]
+        )
+    db.session.add(newPlanet)
+    db.session.commit()
+
+    return jsonify("New planet added successfully"), 200
+
+
+
 #DELETE PLANETA
 @app.route('/planets/<int:planets_id>', methods=['DELETE'])
 def delete_planet(planets_id):
