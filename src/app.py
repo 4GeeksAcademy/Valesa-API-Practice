@@ -11,6 +11,7 @@ from admin import setup_admin
 from models import db, User, Planets, Favorites
 #from models import Person
 
+
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
@@ -187,6 +188,37 @@ def single_fav(user_id, favorites_id):
     if favorite is None:
         raise APIException('Favorite not found', status_code=404)
     return jsonify(favorite.serialize()), 200
+
+
+#personaje favorito
+
+#POST Favorito/Character
+@app.route('/user/<int:user_id>/favorites/characters', methods=['POST'])
+def add_favorite_character(user_id):
+    request_body_favorite = request.get_json()
+    favs = Favorites.query.filter_by(user_id=user_id, characters_id=request_body_favorite["characters_id"]).first()
+    if favs is None:
+        newFav = Favorites(
+            user_id=user_id, characters_id=request_body_favorite["characters_id"])    
+        db.session.add(newFav)
+        db.session.commit()
+        return jsonify("Character added to favorites"), 200
+    else:
+        return jsonify("This character has already been added to your favorites"), 400
+
+
+#DELETE Favorite Character
+@app.route('/user/<int:user_id>/favorites/characters/', methods=['DELETE'])
+def delete_favorite_character(user_id):
+    request_body = request.get_json()
+    thatFav = Favorites.query.filter_by(user_id=user_id, characters_id=request_body["characters_id"]).first()
+    if thatFav is None:
+        raise APIException('Favorite not found', status_code=404)
+    db.session.delete(thatFav)
+    db.session.commit()
+
+    return jsonify("Character deleted from favorites"), 200
+
 
 
 # this only runs if `$ python src/app.py` is executed
