@@ -62,7 +62,17 @@ def single_user(user_id):
 
 
 
-# DELETE
+# DELETE user
+@app.route('/user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    thatuser = User.query.get(user_id)
+    if thatuser is None:
+        raise APIException('User not found', status_code=404)
+    db.session.delete(thatuser)
+    db.session.commit()
+
+    return jsonify("User deleted"), 200
+
 
 #PLANETAS (TODOS Y INDIVIDUAL)
 #GET
