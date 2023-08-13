@@ -63,7 +63,7 @@ def serialize(self):
         }
 
 
-#Personajes
+# Personajes
 
 class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
