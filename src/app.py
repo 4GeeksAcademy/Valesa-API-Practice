@@ -56,6 +56,16 @@ def single_user(user_id):
 
 
 # POST user
+@app.route('/user', methods=['POST'])
+def create_user():
+
+    request_body_user = request.get_json()
+
+    newUser = User(username=request_body_user["username"], email=request_body_user["email"], password=request_body_user["password"])
+    db.session.add(newUser)
+    db.session.commit()
+
+    return jsonify("New user added successfully"), 200
 
 
 
