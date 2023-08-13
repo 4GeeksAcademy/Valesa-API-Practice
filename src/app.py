@@ -160,6 +160,34 @@ def single_character(characters_id):
         raise APIException('Character not found', status_code=404)
     return jsonify(character.serialize()), 200
 
+#POST Character
+@app.route('/characters', methods=['POST'])
+def create_character():
+
+    request_body_character = request.get_json()
+
+    newCharacter = Characters(
+        name=request_body_character["name"], 
+        url=request_body_character["url"], 
+        species=request_body_character["species"],
+        gender=request_body_character["gender"],
+        birthYear=request_body_character["birthYear"],
+        height=request_body_character["height"],
+        mass=request_body_character["mass"],
+        hairColor=request_body_character["hairColor"],
+        eyeColor=request_body_character["eyeColor"],
+        skinColor=request_body_character["skinColor"],
+        films=request_body_character["films"],
+        created=request_body_character["created"],
+        edited=request_body_character["edited"])
+    db.session.add(newCharacter)
+    db.session.commit()
+
+    return jsonify("New character added successfully"), 200
+
+
+
+
 #DELETE Character
 @app.route('/characters/<int:characters_id>', methods=['DELETE'])
 def delete_character(characters_id):
