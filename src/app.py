@@ -57,7 +57,6 @@ def single_user(user_id):
     return jsonify(user.serialize()), 200
 
 
-
 # PUT
 
 
@@ -68,7 +67,7 @@ def single_user(user_id):
 #PLANETAS (TODOS Y INDIVIDUAL)
 #GET
 
-#GET Planets (TODOS-ALL)
+#GET Planetas (TODOS-ALL)
 @app.route('/planets', methods=['GET'])
 def handle_planets():
     allplanets = Planets.query.all()
@@ -76,7 +75,7 @@ def handle_planets():
 
     return jsonify(planetsList), 200
 
-#GET Single Planet
+#GET un solo planeta
 @app.route('/planets/<int:planets_id>', methods=['GET'])
 def single_planet(planets_id):
     
@@ -84,6 +83,20 @@ def single_planet(planets_id):
     if planet is None:
         raise APIException('Planet not found', status_code=404)
     return jsonify(planet.serialize()), 200
+
+
+#DELETE PLANETA
+@app.route('/planets/<int:planets_id>', methods=['DELETE'])
+def delete_planet(planets_id):
+    thatPlanet = Planets.query.get(planets_id)
+    if thatPlanet is None:
+        raise APIException('Planet not found', status_code=404)
+    db.session.delete(thatPlanet)
+    db.session.commit()
+
+    return jsonify("Planet deleted"), 200
+
+
 
 
 
