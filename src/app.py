@@ -36,14 +36,39 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+
+# RUTAS 
+
+# INICIA CON USUARIO(TODOS Y INDIVIDUAL)
+
+#GET Users
 @app.route('/user', methods=['GET'])
-def handle_hello():
+def handle_user():
+    allusers = User.query.all()
+    results = list(map(lambda item: item.serialize(),allusers))
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+    return jsonify(results), 200
 
-    return jsonify(response_body), 200
+#GET Single User
+@app.route('/user/<int:user_id>', methods=['GET'])
+def single_user(user_id):
+    
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify(user.serialize()), 200
+
+
+
+# PUT
+
+
+
+
+# DELETE
+
+
+
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
