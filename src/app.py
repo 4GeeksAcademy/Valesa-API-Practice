@@ -143,7 +143,7 @@ def delete_planet(planets_id):
 
 #PERSONAJES
 
-#GET Characters
+#GET Characters/personajes
 @app.route('/characters', methods=['GET'])
 def handle_characters():
     allcharacters = Characters.query.all()
@@ -184,8 +184,6 @@ def create_character():
     db.session.commit()
 
     return jsonify("New character added successfully"), 200
-
-
 
 
 #DELETE Character
