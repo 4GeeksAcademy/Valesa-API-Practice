@@ -39,8 +39,6 @@ def sitemap():
 
 # RUTAS 
 
-# INICIA CON USUARIO(TODOS Y INDIVIDUAL)
-
 #GET Users
 @app.route('/user', methods=['GET'])
 def handle_user():
@@ -57,7 +55,7 @@ def single_user(user_id):
     return jsonify(user.serialize()), 200
 
 
-# PUT
+# POST user
 
 
 
@@ -74,8 +72,7 @@ def delete_user(user_id):
     return jsonify("User deleted"), 200
 
 
-#PLANETAS (TODOS Y INDIVIDUAL)
-#GET
+#PLANETAS 
 
 #GET Planetas (TODOS-ALL)
 @app.route('/planets', methods=['GET'])
