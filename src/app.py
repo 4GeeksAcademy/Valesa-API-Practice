@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planets
+from models import db, User, Planets, Favorites
 #from models import Person
 
 app = Flask(__name__)
@@ -138,6 +138,36 @@ def delete_planet(planets_id):
     db.session.commit()
 
     return jsonify("Planet deleted"), 200
+
+
+#favoritos
+
+@app.route('/user/<int:user_id>/favorites/planets', methods=['POST'])
+def add_favorite_planet(user_id):
+    
+    request_body_favorite = request.get_json()
+    
+    favs = Favorites.query.filter_by(user_id=user_id, planets_id=request_body_favorite["planets_id"]).first()
+    if favs is None:
+        newFav = Favorites(
+            user_id=user_id, planets_id=request_body_favorite["planets_id"])    
+        db.session.add(newFav)
+        db.session.commit()
+        return jsonify("Planet added to favorites"), 200
+    else:
+        return jsonify("This planet has already been added to your favorites"), 400
+
+#DELETE Favorite Planet
+@app.route('/user/<int:user_id>/favorites/planets/', methods=['DELETE'])
+def delete_favorite_planet(user_id):
+    request_body = request.get_json()
+    thatFav = Favorites.query.filter_by(user_id=user_id, planets_id=request_body["planets_id"]).first()
+    if thatFav is None:
+        raise APIException('Favorite not found', status_code=404)
+    db.session.delete(thatFav)
+    db.session.commit()
+
+    return jsonify("Planet deleted from favorites"), 200
 
 
 
