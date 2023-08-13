@@ -68,8 +68,6 @@ def create_user():
     return jsonify("New user added successfully"), 200
 
 
-
-
 # DELETE user
 @app.route('/user/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
