@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planets, Favorites
+from models import db, User, Planets, Favorites, Characters
 #from models import Person
 
 
@@ -141,7 +141,42 @@ def delete_planet(planets_id):
     return jsonify("Planet deleted"), 200
 
 
-#favoritos
+#PERSONAJES
+
+#GET Characters
+@app.route('/characters', methods=['GET'])
+def handle_characters():
+    allcharacters = Characters.query.all()
+    charactersList = list(map(lambda char: char.serialize(),allcharacters))
+
+    return jsonify(charactersList), 200
+
+#GET UN Character
+@app.route('/characters/<int:characters_id>', methods=['GET'])
+def single_character(characters_id):
+    
+    character = Characters.query.filter_by(id=characters_id).first()
+    if character is None:
+        raise APIException('Character not found', status_code=404)
+    return jsonify(character.serialize()), 200
+
+#DELETE Character
+@app.route('/characters/<int:characters_id>', methods=['DELETE'])
+def delete_character(characters_id):
+    thatCharacter = Characters.query.get(characters_id)
+    if thatCharacter is None:
+        raise APIException('Character not found', status_code=404)
+    db.session.delete(thatCharacter)
+    db.session.commit()
+
+    return jsonify("Character deleted"), 200
+
+
+
+
+
+
+#FAVORITOS
 
 #post planetas favorito
 @app.route('/user/<int:user_id>/favorites/planets', methods=['POST'])
