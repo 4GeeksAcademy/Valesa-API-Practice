@@ -142,6 +142,7 @@ def delete_planet(planets_id):
 
 #favoritos
 
+#post planetas favorito
 @app.route('/user/<int:user_id>/favorites/planets', methods=['POST'])
 def add_favorite_planet(user_id):
     
@@ -157,7 +158,7 @@ def add_favorite_planet(user_id):
     else:
         return jsonify("This planet has already been added to your favorites"), 400
 
-#DELETE Favorite Planet
+#DELETE Favorito Planeta
 @app.route('/user/<int:user_id>/favorites/planets/', methods=['DELETE'])
 def delete_favorite_planet(user_id):
     request_body = request.get_json()
@@ -170,7 +171,22 @@ def delete_favorite_planet(user_id):
     return jsonify("Planet deleted from favorites"), 200
 
 
+#GET Favorito user
+@app.route('/user/<int:user_id>/favorites', methods=['GET'])
+def handle_favorites(user_id):
+    allfavorites = Favorites.query.filter_by(user_id=user_id).all()
+    favoritesList = list(map(lambda fav: fav.serialize(),allfavorites))
 
+    return jsonify(favoritesList), 200
+
+ #GET Single Favorite 
+@app.route('/user/<int:user_id>/favorites/<int:favorites_id>', methods=['GET'])
+def single_fav(user_id, favorites_id):
+
+    favorite = Favorites.query.filter_by(user_id=user_id, id=favorites_id).first()
+    if favorite is None:
+        raise APIException('Favorite not found', status_code=404)
+    return jsonify(favorite.serialize()), 200
 
 
 # this only runs if `$ python src/app.py` is executed
